@@ -1,33 +1,75 @@
-"""
-Command line runner for the Music Recommender Simulation.
-
-This file helps you quickly run and test your recommender.
-
-You will implement the functions in recommender.py:
-- load_songs
-- score_song
-- recommend_songs
-"""
-
 from recommender import load_songs, recommend_songs
 
 
-def main() -> None:
-    songs = load_songs("data/songs.csv") 
+def print_recommendations(profile_name, user_prefs, songs, k=5, mode="balanced"):
+    print("=" * 70)
+    print(f"PROFILE: {profile_name}")
+    print(f"MODE: {mode}")
+    print(f"Preferences: {user_prefs}")
+    print("=" * 70)
 
-    # Starter example profile
-    user_prefs = {"genre": "pop", "mood": "happy", "energy": 0.8}
+    recommendations = recommend_songs(user_prefs, songs, k=k, mode=mode)
 
-    recommendations = recommend_songs(user_prefs, songs, k=5)
-
-    print("\nTop recommendations:\n")
-    for rec in recommendations:
-        # You decide the structure of each returned item.
-        # A common pattern is: (song, score, explanation)
+    for rank, rec in enumerate(recommendations, start=1):
         song, score, explanation = rec
-        print(f"{song['title']} - Score: {score:.2f}")
-        print(f"Because: {explanation}")
+        print(f"{rank}. {song['title']} by {song['artist']}")
+        print(f"   Genre: {song['genre']} | Mood: {song['mood']} | Energy: {song['energy']}")
+        print(f"   Score: {score:.2f}")
+        print(f"   Because: {explanation}")
         print()
+
+    print()
+
+
+def main() -> None:
+    songs = load_songs("data/songs.csv")
+
+    profiles = {
+        "High-Energy Pop": {
+            "genre": "pop",
+            "mood": "happy",
+            "energy": 0.8,
+            "tempo_bpm": 122,
+            "valence": 0.85,
+            "danceability": 0.85,
+            "acousticness": 0.15
+        },
+        "Chill Lofi": {
+            "genre": "lofi",
+            "mood": "chill",
+            "energy": 0.4,
+            "tempo_bpm": 78,
+            "valence": 0.58,
+            "danceability": 0.60,
+            "acousticness": 0.80
+        },
+        "Deep Intense Rock": {
+            "genre": "rock",
+            "mood": "intense",
+            "energy": 0.9,
+            "tempo_bpm": 145,
+            "valence": 0.45,
+            "danceability": 0.60,
+            "acousticness": 0.10
+        }
+    }
+
+    print(f"Loaded songs: {len(songs)}\n")
+
+    # Show recommendations for each profile using balanced mode
+    for profile_name, user_prefs in profiles.items():
+        print_recommendations(profile_name, user_prefs, songs, k=5, mode="balanced")
+
+    # Compare ranking modes for one profile
+    demo_profile_name = "High-Energy Pop"
+    demo_profile = profiles[demo_profile_name]
+
+    print("\n" + "#" * 70)
+    print("COMPARING RANKING MODES FOR HIGH-ENERGY POP")
+    print("#" * 70 + "\n")
+
+    for mode in ["balanced", "genre_first", "energy_first"]:
+        print_recommendations(demo_profile_name, demo_profile, songs, k=5, mode=mode)
 
 
 if __name__ == "__main__":

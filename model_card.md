@@ -2,110 +2,100 @@
 
 ## 1. Model Name  
 
-Give your model a short, descriptive name.  
-Example: **VibeFinder 1.0**  
+**VibeFinder 1.0**
 
 ---
 
 ## 2. Intended Use  
 
-Describe what your recommender is designed to do and who it is for. 
+This model generates music recommendations from a small dataset based on a user’s preferences. It assumes that users have consistent preferences in genre, mood, and audio features such as energy and tempo.
 
-Prompts:  
-
-- What kind of recommendations does it generate  
-- What assumptions does it make about the user  
-- Is this for real users or classroom exploration  
+The system is designed for **classroom exploration and learning purposes**, not for real-world deployment.
 
 ---
 
 ## 3. How the Model Works  
 
-Explain your scoring approach in simple language.  
+The recommender compares user preferences with song attributes and assigns a score to each song.
 
-Prompts:  
+It considers:
+- Genre and mood (exact matches)
+- Energy, tempo, valence, danceability, and acousticness (similarity)
 
-- What features of each song are used (genre, energy, mood, etc.)  
-- What user preferences are considered  
-- How does the model turn those into a score  
-- What changes did you make from the starter logic  
+Each feature contributes to the total score using weighted importance. Songs with higher similarity to user preferences receive higher scores.
 
-Avoid code here. Pretend you are explaining the idea to a friend who does not program.
+The system also includes:
+- Multiple ranking modes that change feature importance
+- A diversity penalty to reduce repeated artists and genres
 
 ---
 
 ## 4. Data  
 
-Describe the dataset the model uses.  
+- Dataset contains **20 songs**
+- Includes genres such as pop, rock, lofi, jazz, ambient
+- Includes moods such as happy, chill, intense, relaxed
+- Dataset is manually created and relatively small
 
-Prompts:  
-
-- How many songs are in the catalog  
-- What genres or moods are represented  
-- Did you add or remove data  
-- Are there parts of musical taste missing in the dataset  
+This dataset does not capture the full diversity of real-world music or listener preferences.
 
 ---
 
 ## 5. Strengths  
 
-Where does your system seem to work well  
-
-Prompts:  
-
-- User types for which it gives reasonable results  
-- Any patterns you think your scoring captures correctly  
-- Cases where the recommendations matched your intuition  
+- Produces intuitive and explainable recommendations
+- Works well for clearly defined user profiles
+- Captures important audio characteristics like energy and tempo
+- Transparent scoring logic makes it easy to understand
+- Diversity penalty improves variety in results
 
 ---
 
 ## 6. Limitations and Bias 
 
-Where the system struggles or behaves unfairly. 
+- Small dataset limits coverage and diversity
+- Numeric similarity can override genre preferences
+- Manual weighting introduces design bias
+- Does not use real user behavior or feedback
+- May favor certain genres due to dataset imbalance
 
-Prompts:  
-
-- Features it does not consider  
-- Genres or moods that are underrepresented  
-- Cases where the system overfits to one preference  
-- Ways the scoring might unintentionally favor some users  
+This could lead to unfair exposure of some genres in a real-world system.
 
 ---
 
 ## 7. Evaluation  
 
-How you checked whether the recommender behaved as expected. 
+The system was evaluated using multiple user profiles:
 
-Prompts:  
+- High-Energy Pop
+- Chill Lofi
+- Deep Intense Rock
 
-- Which user profiles you tested  
-- What you looked for in the recommendations  
-- What surprised you  
-- Any simple tests or comparisons you ran  
+Results were compared across:
+- Different profiles
+- Different ranking modes
 
-No need for numeric metrics unless you created some.
+Observations:
+- Genre-first mode prioritizes exact genre matches
+- Energy-first mode prioritizes vibe similarity over category
+- Diversity penalty reduces repeated artists and genres
+
+These tests helped confirm that the system responds logically to changes in preferences.
 
 ---
 
 ## 8. Future Work  
 
-Ideas for how you would improve the model next.  
-
-Prompts:  
-
-- Additional features or preferences  
-- Better ways to explain recommendations  
-- Improving diversity among the top results  
-- Handling more complex user tastes  
+- Expand dataset to include more songs and genres
+- Incorporate user listening history
+- Implement collaborative filtering
+- Improve fairness and diversity mechanisms
+- Add advanced features like lyrics or genre hierarchies
 
 ---
 
 ## 9. Personal Reflection  
 
-A few sentences about your experience.  
+This project demonstrated how simple algorithms can produce meaningful recommendations. One surprising insight was how sensitive the system is to feature weights — small adjustments can significantly change results.
 
-Prompts:  
-
-- What you learned about recommender systems  
-- Something unexpected or interesting you discovered  
-- How this changed the way you think about music recommendation apps  
+It also highlighted that recommendation systems are not neutral; they reflect the assumptions and biases of their design. Human judgment remains important to ensure fairness, diversity, and meaningful user experiences.
